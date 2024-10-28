@@ -92,10 +92,11 @@ class WebSocket {
       _channel = null;
       _reconnect();
     }
-
-    final uriNew = uriUpdate != null ? await uriUpdate(_uri) : _uri;
+    
         
     try {
+      final uriNew = uriUpdate != null ? await uriUpdate(_uri) : _uri;
+      
       final ws = await connect(
         uriNew.toString(),
         protocols: _protocols,

@@ -32,6 +32,7 @@ class WebSocket {
     Backoff? backoff,
     Duration? timeout,
     String? binaryType,
+    this.uriUpdate,
   })  : _uri = uri,
         _protocols = protocols,
         _pingInterval = pingInterval,
@@ -49,6 +50,7 @@ class WebSocket {
   final Backoff _backoff;
   final Duration _timeout;
   final String? _binaryType;
+  final Uri Function(Uri uri)? uriUpdate;
 
   final _messageController = StreamController<dynamic>.broadcast();
   final _connectionController = ConnectionController();
@@ -91,9 +93,11 @@ class WebSocket {
       _reconnect();
     }
 
+    final uriNew = uriUpdate != null ? uriUpdate(_uri) : _uri;
+        
     try {
       final ws = await connect(
-        _uri.toString(),
+        uriNew.toString(),
         protocols: _protocols,
         headers: _headers,
         pingInterval: _pingInterval,

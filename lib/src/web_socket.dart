@@ -95,7 +95,7 @@ class WebSocket {
     
         
     try {
-      final uriNew = uriUpdate != null ? await uriUpdate(_uri) : _uri;
+      final uriNew = uriUpdate != null ? await uriUpdate!(_uri) : _uri;
       
       final ws = await connect(
         uriNew.toString(),

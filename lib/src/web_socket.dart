@@ -50,7 +50,7 @@ class WebSocket {
   final Backoff _backoff;
   final Duration _timeout;
   final String? _binaryType;
-  final Uri Function(Uri uri)? uriUpdate;
+  final Future<Uri> Function(Uri uri)? uriUpdate;
 
   final _messageController = StreamController<dynamic>.broadcast();
   final _connectionController = ConnectionController();
@@ -93,7 +93,7 @@ class WebSocket {
       _reconnect();
     }
 
-    final uriNew = uriUpdate != null ? uriUpdate(_uri) : _uri;
+    final uriNew = uriUpdate != null ? await uriUpdate(_uri) : _uri;
         
     try {
       final ws = await connect(
